@@ -17,6 +17,15 @@ namespace Logger
                 var text = Console.ReadLine();                
                 logger.Log(text);
                 //Console.Read();
+                try
+                {
+                    //tu chće logować info. plik ma się nazywać Info.txt
+                }
+                catch (Exception ex)
+                {
+                    //tu chće logować error plik ma się nazywać Error.txt lub błędziki.txt lub inaczej
+                    throw;
+                }
             }
         }
     }

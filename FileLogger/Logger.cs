@@ -16,7 +16,7 @@ namespace FileLogger
         public Logger()
         {
             setDirectory();
-        }        
+        }
 
         public Logger(string fileName)
         {
@@ -24,19 +24,36 @@ namespace FileLogger
             setDirectory();
         }
         public void Log(string text)
+        {            
+            try
+            {
+                CreateDirectory();
+                File.AppendAllText(Path.Combine(directory, fileName),
+                    $"{Environment.NewLine} Data: {DateTime.Now.ToShortDateString()} Informacja: {text}");
+            }
+            catch (DirectoryNotFoundException dnfe)
+            {
+                LogError(dnfe.Message);
+            }
+        }
+        public void LogError(string text)
+        {
+            CreateDirectory();
+            File.AppendAllText(Path.Combine(directory, "Error.txt"),
+                $"{Environment.NewLine} Data: {DateTime.Now.ToShortDateString()} Informacja: {text}");
+        }
+        private static void CreateDirectory()
         {
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
-            //File.AppendAllLines(Path.Combine(directory, fileName), new string[] { text });
-            text = $"{Environment.NewLine} Data: {DateTime.Now.ToShortDateString()} Informacja: {text}";
-            File.AppendAllText(Path.Combine(directory, fileName), text);
         }
+
         private void setDirectory()
         {
             try
-            {               
+            {
                 directory = System.Configuration.ConfigurationManager.AppSettings["dir"];
                 //var file = System.Configuration.ConfigurationManager.OpenExeConfiguration("~/FileLogger.dll.config");
                 //directory = file.AppSettings["dir"].ToString();
