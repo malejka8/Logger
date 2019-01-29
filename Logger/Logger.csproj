@@ -50,7 +50,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FileLogger\FileLogger.csproj">
+      <Project>{227abc94-90a5-4740-82b5-63ae6c22ee69}</Project>
+      <Name>FileLogger</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="StaticFiles\Test.txt" />
   </ItemGroup>
