@@ -11,17 +11,24 @@ namespace FileLogger
     {
         private readonly string fileName;
         //const string fileName2 = "stała";
-        private static string directory;
 
-        public Logger()
+        private readonly string fileError = "Error.txt"; //tu domyslnie ustawiam Error.txt
+
+        private static string directory; //dladczego static?
+
+
+
+        public Logger()  //konstruktor wywoluje metode stDirectory
         {
-            setDirectory();
+            this.fileName = "aaa.txt";
+            SetDirectory();
         }
 
-        public Logger(string fileName)
+        public Logger(string fileName, string fileError)  //2 konstruktor, tu w nawiasie to jest parametr, konstruktor przypisuje wartosc fileName          
         {
             this.fileName = fileName;
-            setDirectory();
+            this.fileError = fileError;
+            SetDirectory();
         }
         public void Log(string text)
         {            
@@ -35,13 +42,19 @@ namespace FileLogger
             {
                 LogError(dnfe.Message);
             }
+            catch (Exception)
+            {
+                LogError("Coś się zepsuło");
+            }
         }
+
         public void LogError(string text)
         {
             CreateDirectory();
-            File.AppendAllText(Path.Combine(directory, "Error.txt"),
-                $"{Environment.NewLine} Data: {DateTime.Now.ToShortDateString()} Informacja: {text}");
+            File.AppendAllText(Path.Combine(directory, fileError),
+                $"{Environment.NewLine} Błąd {DateTime.Now.ToShortDateString()} | Error: {text}");
         }
+
         private static void CreateDirectory()
         {
             if (!Directory.Exists(directory))
@@ -50,7 +63,7 @@ namespace FileLogger
             }
         }
 
-        private void setDirectory()
+        private void SetDirectory()
         {
             try
             {
@@ -60,11 +73,11 @@ namespace FileLogger
             }
             catch (FileNotFoundException fnfe)
             {
-
+                LogError(fnfe.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw;
+                LogError("Coś się zepsuło");
             }
         }
     }
