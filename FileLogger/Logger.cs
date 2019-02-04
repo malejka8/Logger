@@ -10,26 +10,25 @@ namespace FileLogger
     public class Logger
     {
         private readonly string fileName;
-        //const string fileName2 = "stała";
-
-        private readonly string fileError = "Error.txt"; //tu domyslnie ustawiam Error.txt
+        private readonly string fileError; //tu domyslnie ustawiam Error.txt
 
         private static string directory; //dladczego static?
 
+        public Logger() : this("", "") { }  //Kontruktor wywołujący konstruktor docelowy, z dwoma parametrami
 
-
-        public Logger()  //konstruktor wywoluje metode stDirectory
-        {
-            this.fileName = "aaa.txt";
-            SetDirectory();
-        }
+        public Logger(string fileName) : this(fileName, "") { } //Kontruktor wywołujący konstruktor docelowy, z dwoma parametrami
 
         public Logger(string fileName, string fileError)  //2 konstruktor, tu w nawiasie to jest parametr, konstruktor przypisuje wartosc fileName          
         {
-            this.fileName = fileName;
-            this.fileError = fileError;
+            this.fileName = string.IsNullOrEmpty(fileName) ? "Info.txt" : fileName; //Sprawdzamy, czy nazwa nie jest pusta (albo null), zeby nie miec problemów przy tworzeniu pliku, w razie czego idziemy na default
+            this.fileError = string.IsNullOrEmpty(fileError) ? "Error.txt" : fileError;
             SetDirectory();
         }
+
+        //to samo mozna bylo osiagnac robiac jeden kontruktor z dwoma paramatrami opcjonalnymi, ale tak jest brzydziej i nie nauczysz się łączenia konstruktorów
+        //public Logger(string fileName = "Info.txt", string fileError = "Error")        
+        
+
         public void Log(string text)
         {            
             try
